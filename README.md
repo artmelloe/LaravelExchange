@@ -1,64 +1,135 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel Api
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicação desenvolvida em PHP com o framework Laravel para conversão de moedas. Esse projeto conta com duas vias para manipulação dos dados, através de uma API própria ou através do navegador do usuário.
 
-## About Laravel
+# Tecnologias
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+  - Laravel 9
+  - PHP 8
+  - MySQL
+  - Nginx
+  - Docker
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Preparação
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Certifique-se de ter instalados em sua máquina o **[Docker](https://docs.docker.com/engine/install/)** e o **[Docker Compose](https://docs.docker.com/compose/install/)**.
 
-## Learning Laravel
+# Configuração
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+  - Clone este repositório para sua máquina;
+  - Acesse seu terminal e vá para o diretório do projeto;
+  - No terminal execute **docker-compose build**;
+  - Em seguida ainda no terminal execute **docker-compose up**;
+  - Nos arquivos (root) do projeto, copie e renomeie **.env.example** para **.env**;
+  - No terminal, acesse o container app com o comando **docker-compose exec app bash**;
+  - No container, instale as dependências do composer com o comando **composer install**;
+  - Em seguida instale as dependências de js com o comando **npm install**;
+  - Gere a chave do Laravel com o comando **php artisan key:generate**;
+  - Agora utilize qualquer database tool de sua preferência para criar o banco de dados. Esse projeto já vem com o PHPMyAdmin e você pode acessa-lo em **http://localhost:8080/** com as credênciais **root**/**root**. Com tudo pronto, crie um banco de dados chamado **laravel_exchange**;
+  - De volta ao container no terminal, gere as tabelas do banco com o comando **php artisan migrate**;
+  - Por fim, insira algumas configurações padrão com o comando **php artisan db:seed**. As credênciais para acessar o projeto são: email **admin@admin.com** e senha **admin**;
+  - Agora você pode acessar o projeto através do endereço **http://localhost/login**;
+  - **(opcional)** Agora resta configurar o SMTP para disparo de emails. Esse projeto utiliza do Gmail como SMTP padrão, logo será necessário um email e senha do mesmo para disparar os emails, além de uma configuração extra de segurança para permitir esses disparos. Você pode verificar essa configuração clicando [aqui](https://myaccount.google.com/lesssecureapps). Com tudo pronto, acesse o arquivo **EmailService** e preencha os campos **username** e **password** com suas respectivas informações.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Requisições na API
 
-## Laravel Sponsors
+Exemplo de **Login**:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- **URL:** http://localhost/api/login
+- **Método:** _POST
+- **Headers:** Accept: application/json | Content-Type: application/json
+- **Body:**
+```json
+{
+    "email": "admin@admin.com",
+    "password": "admin"
+}
+```
+- **Retorno:**
+```json
+{
+    "user": {
+        "id": 1,
+        "name": "Admin",
+        "email": "admin@admin.com",
+        "email_verified_at": null,
+        "created_at": "2022-05-13T01:53:08.000000Z",
+        "updated_at": "2022-05-13T01:53:08.000000Z"
+    },
+    "authorisation": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9sb2dpbiIsImlhdCI6MTY1MjQwODU3OSwiZXhwIjoxNjUyNDEyMTc5LCJuYmYiOjE2NTI0MDg1NzksImp0aSI6InNrYk9CWGo5T3IwazBUekYiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.SLMiJJUDat8z_RzD5wXyYe_BdsAHr4yk0CTa7adgvTo",
+        "type": "bearer"
+    }
+}
+```
 
-### Premium Partners
+Exemplo de **Logout**:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- **URL:** http://localhost/api/logout
+- **Método:** _POST
+- **Headers:** Accept: application/json | Content-Type: application/json | Authorization: Bearer + token
+- **Retorno:**
+```json
+{
+    "message": "Successfully logged out"
+}
+```
 
-## Contributing
+Exemplo de **Configuração de Taxas**:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **URL:** http://localhost/api/configuration
+- **Método:** _POST
+- **Headers:** Accept: application/json | Content-Type: application/json | Authorization: Bearer + token
+- **Body:**
+```json
+{
+	"boleto_fee": 1.45,
+	"credit_card_fee": 7.63,
+	"fee_amount_less": 2,
+	"fee_amount_less_value": 3000,
+	"fee_amount_greater": 1,
+	"fee_amount_greater_value": 3000
+}
+```
+- **Retorno:**
+```json
+{
+    "id": "9d84f078-b8e7-42a8-b3db-f7f0016cc7c3",
+    "boleto_fee": 0.014499999999999999,
+    "credit_card_fee": 0.07629999999999999,
+    "fee_amount_less": 0.02,
+    "fee_amount_less_value": 3000,
+    "fee_amount_greater": 0.01,
+    "fee_amount_greater_value": 3000,
+    "created_at": "2022-05-13T01:53:08.000000Z",
+    "updated_at": "2022-05-13T01:53:08.000000Z"
+}
+```
 
-## Code of Conduct
+Exemplo de **Conversão de Moedas**:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **URL:** http://localhost/api/exchange
+- **Método:** _POST
+- **Headers:** Accept: application/json | Content-Type: application/json | Authorization: Bearer + token
+- **Body:**
+```json
+{
+	"income_currency": "USD",
+	"amount_exchange": "5000",
+	"payment_method": "boleto"
+}
+```
+- **Retorno:**
+```json
+{
+    "originCurrency": "BRL",
+    "incomeCurrency": "USD",
+    "amountExchange": "5000.00",
+    "paymentMethod": "boleto",
+    "currentCurrency": "5.14",
+    "exchangeTotal": "948.93",
+    "paymentFee": "72.50",
+    "exchangeFee": "50.00",
+    "exchangeWithoutFees": "4877.50"
+}
+```
