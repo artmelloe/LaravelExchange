@@ -40,7 +40,7 @@ class CurrencyExchangeService
         $exchange_fee = $amount_exchange * match (true) {
             $amount_exchange > $configuration->fee_amount_greater_value => $configuration->fee_amount_greater,
             $amount_exchange <= $configuration->fee_amount_less_value => $configuration->fee_amount_less,
-            default => 0 // No exchange fee aplied!
+            default => 0 // No exchange fee applied!
         };
 
         $exchange_without_fees = $amount_exchange - ($payment_fee + $exchange_fee);
