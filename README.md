@@ -2,6 +2,8 @@
 
 Aplicação desenvolvida em PHP com o framework Laravel para conversão de moedas. Esse projeto conta com duas vias para manipulação dos dados, através de uma API própria ou através do navegador do usuário.
 
+Video explicativo: https://www.loom.com/share/e10c0c732df84960b9f1d4d871cacbc3
+
 # Tecnologias
 
   - Laravel 9
