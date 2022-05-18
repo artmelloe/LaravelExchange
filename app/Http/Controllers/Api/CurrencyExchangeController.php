@@ -26,6 +26,15 @@ class CurrencyExchangeController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function getExchangeHistory()
+    {
+        $result = Exchange::orderByDesc('created_at')->get();
+
+        return response()->json(
+            $result
+        , Response::HTTP_OK);
+    }
+
     private function storeExchange(Array $result) :Void
     {
         $exchange = new Exchange;

@@ -44,7 +44,7 @@
                                 <select class="form-select d-block w-100" id="payment_method" name="payment_method" required>
                                     <option value="">- Select -</option>
                                     <option value="boleto">Boleto</option>
-                                    <option value="credit_card">Credit Card</option>
+                                    <option value="credit_card">Credit card</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Please select a valid payment method.
@@ -129,13 +129,13 @@
                         <ul>
                             <li><b>Origin currency:</b> {{ session('result')['originCurrency'] }}</li>
                             <li><b>Income currency:</b> {{ session('result')['incomeCurrency'] }}</li>
-                            <li><b>Amount to exchange:</b> {{ Helper::currencyFormat(session('result')['amountExchange']) }}</li>
-                            <li><b>Payment method:</b> {{ Helper::capitalize(session('result')['paymentMethod']) }}</li>
-                            <li><b>Current currency:</b> {{ Helper::currencyFormat(session('result')['currentCurrency'], false) }}</li>
-                            <li><b>Exchange total:</b> {{ Helper::currencyFormat(session('result')['exchangeTotal'], false) }}</li>
-                            <li><b>Payment fee:</b> {{ Helper::currencyFormat(session('result')['paymentFee']) }}</li>
-                            <li><b>Exchange fee:</b> {{ Helper::currencyFormat(session('result')['exchangeFee']) }}</li>
-                            <li><b>Exchange without fees:</b> {{ Helper::currencyFormat(session('result')['exchangeWithoutFees']) }}</li>
+                            <li><b>Amount to exchange:</b> {{ Helper::currencyFormat(session('result')['amountExchange'], session('result')['originCurrency']) }}</li>
+                            <li><b>Payment method:</b> {{ Helper::capitalize(session('result')['paymentMethod'], session('result')['originCurrency']) }}</li>
+                            <li><b>Current currency:</b> {{ Helper::currencyFormat(session('result')['currentCurrency'], session('result')['incomeCurrency']) }}</li>
+                            <li><b>Exchange total:</b> {{ Helper::currencyFormat(session('result')['exchangeTotal'], session('result')['incomeCurrency']) }}</li>
+                            <li><b>Payment fee:</b> {{ Helper::currencyFormat(session('result')['paymentFee'], session('result')['originCurrency']) }}</li>
+                            <li><b>Exchange fee:</b> {{ Helper::currencyFormat(session('result')['exchangeFee'], session('result')['originCurrency']) }}</li>
+                            <li><b>Exchange without fees:</b> {{ Helper::currencyFormat(session('result')['exchangeWithoutFees'], session('result')['originCurrency']) }}</li>
                         </ul>
                     </div>
                     <div class="col-md-4 mb-6">
@@ -146,7 +146,7 @@
                     </div>
                     <div class="col-md-4 mb-6">
                         <h2 class="mb-3">Send to email</h2>
-                        <form class="needs-validation" method="post" action="{{ route('submit_email') }}" novalidate>
+                        <form class="needs-validation" method="post" action="{{ route('submit_mail') }}" novalidate>
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 mb-3">
@@ -189,13 +189,13 @@
                                     <tr>
                                         <td>{{ $exchange->origin_currency }}</td>
                                         <td>{{ $exchange->income_currency }}</td>
-                                        <td>{{ Helper::currencyFormat($exchange->amount_exchange) }}</td>
+                                        <td>{{ Helper::currencyFormat($exchange->amount_exchange, $exchange->origin_currency) }}</td>
                                         <td>{{ Helper::capitalize($exchange->payment_method) }}</td>
-                                        <td>{{ Helper::currencyFormat($exchange->current_currency, false) }}</td>
-                                        <td>{{ Helper::currencyFormat($exchange->exchange_total) }}</td>
-                                        <td>{{ Helper::currencyFormat($exchange->payment_fee) }}</td>
-                                        <td>{{ Helper::currencyFormat($exchange->exchange_fee) }}</td>
-                                        <td>{{ Helper::currencyFormat($exchange->exchange_without_fees) }}</td>
+                                        <td>{{ Helper::currencyFormat($exchange->current_currency, $exchange->income_currency) }}</td>
+                                        <td>{{ Helper::currencyFormat($exchange->exchange_total, $exchange->income_currency) }}</td>
+                                        <td>{{ Helper::currencyFormat($exchange->payment_fee, $exchange->origin_currency) }}</td>
+                                        <td>{{ Helper::currencyFormat($exchange->exchange_fee, $exchange->origin_currency) }}</td>
+                                        <td>{{ Helper::currencyFormat($exchange->exchange_without_fees, $exchange->origin_currency) }}</td>
                                         <td>{{ Helper::dateFormat($exchange->created_at) }}</td>
                                     </tr>
                                 @endforeach

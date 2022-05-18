@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CurrencyExchangeController;
+use App\Http\Controllers\ExchangeMailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +23,5 @@ Route::get('logout', [AuthenticationController::class, 'logout'])->name('logout'
 Route::middleware('auth:web')->group(function() {
     Route::get('/', [CurrencyExchangeController::class, 'index'])->name('index');
     Route::post('store', [CurrencyExchangeController::class, 'store'])->name('store');
-    Route::post('submitEmail', [CurrencyExchangeController::class, 'submitEmail'])->name('submit_email');
+    Route::post('submitMail', [ExchangeMailController::class, 'submitMail'])->name('submit_mail');
 });

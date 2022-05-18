@@ -6,7 +6,6 @@ use App\Misc\Helper;
 use App\Models\Configuration;
 use App\Models\Exchange;
 use App\Services\CurrencyExchangeService;
-use App\Services\EmailService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -67,28 +66,5 @@ class CurrencyExchangeController extends Controller
         $exchange->exchange_without_fees = $result['exchangeWithoutFees'];
 
         $exchange->save();
-    }
-
-    public function submitEmail(EmailService $emailService, Request $request) :RedirectResponse
-    {
-        $exchange = Exchange::orderByDesc('created_at')->first();
-
-        $email = $request->input('email');
-        $subject = 'Currency Exchange';
-
-        $message = 'Here is your exchange result:<br><br>';
-        $message .= '<b>Origin currency:</b> '.$exchange->origin_currency.'<br>';
-        $message .= '<b>Income currency:</b> '.$exchange->income_currency.'<br>';
-        $message .= '<b>Amount exchange:</b> '.Helper::currencyFormat($exchange->amount_exchange).'<br>';
-        $message .= '<b>Payment method:</b> '.Helper::capitalize($exchange->payment_method).'<br>';
-        $message .= '<b>Current currency:</b> '.Helper::currencyFormat($exchange->current_currency, false).'<br>';
-        $message .= '<b>Exchange total:</b> '.Helper::currencyFormat($exchange->exchange_total).'<br>';
-        $message .= '<b>Payment fee:</b> '.Helper::currencyFormat($exchange->payment_fee).'<br>';
-        $message .= '<b>Exchange fee:</b> '.Helper::currencyFormat($exchange->exchange_fee).'<br>';
-        $message .= '<b>Exchange without fees:</b> '.Helper::currencyFormat($exchange->exchange_without_fees).'<br>';
-
-        $emailService->send($email, $subject, $message);
-
-        return Redirect::route('index')->with('submit_email_success', 'Your email has been sent!');
     }
 }

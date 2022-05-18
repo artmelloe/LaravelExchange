@@ -2,39 +2,38 @@
 
 namespace App\Misc;
 
-use Illuminate\Support\Carbon;
+use NumberFormatter;
+use Illuminate\Support\Str;
 
 Class Helper
 {
-    public static function numberFormat($number)
+    public static function numberFormat($number) :Float
     {
         return number_format($number, 2, '.', '');
     }
 
-    public static function currencyFormat($currency, $money_sign = true)
+    public static function currencyFormat($amount, $currency) :String
     {
-        $value = str_replace('.', ',', $currency);
-
-        return ($money_sign ? 'R$ ' : '$ ').$value;
+        return NumberFormatter::create('pt_BR', NumberFormatter::CURRENCY)->formatCurrency($amount, $currency);
     }
 
-    public static function floatToPercentage($percentage)
+    public static function floatToPercentage($percentage) :Float
     {
         return $percentage * 100;
     }
 
-    public static function percentageToFloat($percentage)
+    public static function percentageToFloat($percentage) :Float
     {
         return $percentage / 100;
     }
 
-    public static function dateFormat($date)
+    public static function dateFormat($date) :String
     {
         return $date->format('d/m/Y');
     }
 
-    public static function capitalize($string)
+    public static function capitalize($string) :String
     {
-        return ucwords(str_replace('_', ' ', $string));
+        return Str::ucfirst(Str::replace('_', ' ', $string));
     }
 }
