@@ -31,7 +31,7 @@ Certifique-se de ter instalados em sua máquina o **[Docker](https://docs.docker
   - De volta ao container no terminal, gere as tabelas do banco com o comando **php artisan migrate**;
   - Por fim, insira algumas configurações padrão com o comando **php artisan db:seed**. As credênciais para acessar o projeto são: email **admin@admin.com** e senha **admin**;
   - Agora você pode acessar o projeto através do endereço **http://localhost/login**;
-  - **(opcional)** Agora resta configurar o SMTP para disparo de emails. Esse projeto utiliza do Gmail como SMTP padrão, logo será necessário um email e senha do mesmo para disparar os emails, além de uma configuração extra de segurança para permitir esses disparos. Você pode verificar essa configuração clicando [aqui](https://myaccount.google.com/lesssecureapps). Com tudo pronto, acesse o arquivo **EmailService** e preencha os campos **username** e **password** com suas respectivas informações.
+  - **(opcional)** Configurar SMTP para disparo de emails no **.env**.
 
 # Requisições na API
 
