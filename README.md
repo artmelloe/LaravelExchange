@@ -35,4 +35,4 @@ Certifique-se de ter instalados em sua máquina o **[Docker](https://docs.docker
 
 # Requisições na API
 
-A documentação da API pode ser acessada **[aqui](http://localhost/api/docs)**.
+A documentação da API pode ser acessada em **http://localhost/api/docs**.
