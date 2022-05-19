@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\ExchangeRequest;
 use App\Models\Exchange;
 use App\Services\CurrencyExchangeService;
@@ -11,6 +11,86 @@ use Illuminate\Http\JsonResponse;
 
 class CurrencyExchangeController extends Controller
 {
+    /**
+    * @OA\Get(
+    *     path="/exchange/available",
+    *     tags={"Currency Exchange"},
+    *     summary="Check the currencies available to exchange",
+    *     operationId="available",
+    *      security={
+    *          {"bearer": {}}
+    *      },
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success"
+    *     ),
+    *     @OA\Response(
+    *        response=401,
+    *        description="Unauthenticated"
+    *     ),
+    * )
+    */
+
+    public function getDefaultAvailable(CurrencyExchangeService $currencyExchangeService) :JsonResponse
+    {
+        $result = $currencyExchangeService->getDefaultAvailable();
+
+        return response()->json([
+            $result
+        ], Response::HTTP_OK);
+    }
+
+        /**
+    * @OA\Post(
+    *      path="/exchange",
+    *      tags={"Currency Exchange"},
+    *      summary="Exchange the currencies",
+    *      operationId="exchange",
+    *      security={
+    *          {"bearer": {}}
+    *      },
+    *      @OA\Parameter(
+    *          name="income_currency",
+    *          in="query",
+    *          required=true,
+    *          example="USD",
+    *          @OA\Schema(
+    *              type="string"
+    *          )
+    *      ),
+    *      @OA\Parameter(
+    *          name="amount_exchange",
+    *          in="query",
+    *          required=true,
+    *          example="5000",
+    *          @OA\Schema(
+    *              type="string"
+    *          )
+    *      ),
+    *      @OA\Parameter(
+    *          name="payment_method",
+    *          in="query",
+    *          required=true,
+    *          example="boleto",
+    *          @OA\Schema(
+    *              type="string"
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Success"
+    *      ),
+    *       @OA\Response(
+    *          response=401,
+    *          description="Unauthenticated"
+    *      ),
+    *       @OA\Response(
+    *          response=422,
+    *          description="Unprocessable Content"
+    *      )
+    * )
+    */
+
     public function getExchange(CurrencyExchangeService $currencyExchangeService, ExchangeRequest $request) :JsonResponse
     {
         $income_currency = $request->input('income_currency');
@@ -25,6 +105,26 @@ class CurrencyExchangeController extends Controller
             $result
         ], Response::HTTP_OK);
     }
+
+        /**
+    * @OA\Get(
+    *     path="/exchange/history",
+    *     tags={"Currency Exchange"},
+    *     summary="Check the exchange history",
+    *     operationId="history",
+    *      security={
+    *          {"bearer": {}}
+    *      },
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success"
+    *     ),
+    *     @OA\Response(
+    *        response=401,
+    *        description="Unauthenticated"
+    *     ),
+    * )
+    */
 
     public function getExchangeHistory()
     {
@@ -50,14 +150,5 @@ class CurrencyExchangeController extends Controller
         $exchange->exchange_without_fees = $result['exchangeWithoutFees'];
 
         $exchange->save();
-    }
-
-    public function getDefaultAvailable(CurrencyExchangeService $currencyExchangeService) :JsonResponse
-    {
-        $result = $currencyExchangeService->getDefaultAvailable();
-
-        return response()->json([
-            $result
-        ], Response::HTTP_OK);
     }
 }

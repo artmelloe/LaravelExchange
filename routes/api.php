@@ -17,11 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', [AuthenticationController::class, 'login'])->name('api_login');
-Route::post('logout', [AuthenticationController::class, 'logout'])->name('api_logout');
+Route::get('logout', [AuthenticationController::class, 'logout'])->name('api_logout');
 
 Route::middleware('auth:api')->group(function() {
     Route::post('configuration', [ConfigurationController::class, 'store'])->name('api_configuration_store');
+
     Route::post('exchange', [CurrencyExchangeController::class, 'getExchange'])->name('api_get_exchange');
     Route::get('exchange/history', [CurrencyExchangeController::class, 'getExchangeHistory'])->name('api_get_exchange_history');
-    Route::get('available', [CurrencyExchangeController::class, 'getDefaultAvailable'])->name('api_get_default_available');
+    Route::get('exchange/available', [CurrencyExchangeController::class, 'getDefaultAvailable'])->name('api_get_default_available');
 });
